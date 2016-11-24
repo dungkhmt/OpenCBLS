@@ -21,7 +21,7 @@ public class LocalSearchManager {
 		n = 0;
 		_invariants = new Vector<AbstractInvariant>();
 		_x = new ArrayList<VarIntLS>();
-		System.out.println("JCBLS library: by dungkhmt@gmail.com, Algorithms & Optimization LAB, SoICT, HUST, 2014-2015");
+		System.out.println("OpenCBLS library: by dungkhmt@gmail.com, Algorithms & Optimization LAB, SoICT, HUST, 2014-2015");
 		_closed = false;
 	}
 	
