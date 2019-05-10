@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
-
 import localsearch.functions.basic.FuncPlus;
 import localsearch.functions.basic.FuncVarConst;
 import localsearch.model.AbstractInvariant;
