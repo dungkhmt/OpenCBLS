@@ -2,3 +2,7 @@ source-code/OpenCBLS/.gitignore
 source-code/OpenCBLS/.classpath
 source-code/OpenCBLS/.project
 source-code/OpenCBLS/bin/
+source-code/version-2.0.1/OpenCBLS/.gitignore
+source-code/version-2.0.1/OpenCBLS/.classpath
+source-code/version-2.0.1/OpenCBLS/.project
+source-code/version-2.0.1/OpenCBLS/bin/

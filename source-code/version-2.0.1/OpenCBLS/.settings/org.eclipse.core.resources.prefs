@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/localsearch/applications/mastercoursestimetable/MainApp.java=UTF-8
+encoding//src/localsearch/applications/timetabling/TimeTabling.java=UTF-8
+encoding//src/localsearch/domainspecific/vehiclerouting/vrp/app/minmaxcvrp/MinMaxVRP.java=UTF-8
+encoding//src/localsearch/domainspecific/vehiclerouting/vrp/utils/googlemaps/GoogleMapsQuery.java=UTF-8

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<timetabling>
+    <instructorsList>
+        <instructor>
+            <id>1</id>
+            <name>1</name>
+            <busy>
+                <day>2</day>
+                <slot>4</slot>
+            </busy>
+                 <busy>
+                <day>1</day>
+
+                <slot>2</slot>
+            </busy>
+            <busy>
+                <day>3</day>
+                <slot>2</slot>
+            </busy>
+              <busy>
+                <day>2</day>
+                <slot>2</slot>
+            </busy>
+        </instructor>
+
+        <instructor>
+            <id>2</id>
+            <name>2</name>
+            <busy>
+				<day>4</day>
+				<slot>1</slot>
+			</busy>
+        </instructor>
+
+        <instructor>
+            <id>3</id>
+            <name>3</name>
+        </instructor>
+
+        <instructor>
+            <id>4</id>
+            <name>4</name>
+        </instructor>
+
+        <instructor>
+            <id>5</id>
+            <name>5</name>
+        </instructor>
+
+        <instructor>
+            <id>6</id>
+            <name>6</name>
+        </instructor>
+
+        <instructor>
+            <id>7</id>
+            <name>7</name>
+        </instructor>
+
+        <instructor>
+            <id>8</id>
+            <name>8</name>
+        </instructor>
+
+        <instructor>
+            <id>9</id>
+            <name>9</name>
+        </instructor>
+
+        <instructor>
+            <id>10</id>
+            <name>10</name>
+        </instructor>
+
+    </instructorsList>
+
+    <coursesList>
+        <course>
+            <id>1</id>
+            <name>Duong loi CM cua Dang CS VN</name>
+            <instructor>1</instructor>
+            <nbrSlots>3</nbrSlots>
+            <classList>
+                <class>LUH10</class>
+                <class>NUT10</class>
+                <class>VUW10A</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>2</id>
+            <name>Ly thuyet mach</name>
+            <instructor>2</instructor>
+            <nbrSlots>3</nbrSlots>
+            <classList>
+                <class>LUH10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>3</id>
+            <name>Nguyen Ly may</name>
+            <instructor>3</instructor>
+            <nbrSlots>3</nbrSlots>
+            <classList>
+                <class>NUT10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>4</id>
+            <name>Tieng Anh 4</name>
+            <instructor>4</instructor>
+            <nbrSlots>2</nbrSlots>
+            <classList>
+                <class>NUT10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>5</id>
+            <name>Tieng Duc 4</name>
+            <instructor>5</instructor>
+            <nbrSlots>3</nbrSlots>
+            <classList>
+                <class>LUH10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>6</id>
+            <name>Nhap mon co dien tu</name>
+            <instructor>6</instructor>
+            <nbrSlots>4</nbrSlots>
+            <classList>
+                <class>NUT10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>7</id>
+            <name>Co so KT do luong</name>
+            <instructor>6</instructor>
+            <nbrSlots>2</nbrSlots>
+            <classList>
+                <class>LUH10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>8</id>
+            <name>Tieng Anh A2</name>
+            <instructor>8</instructor>
+            <nbrSlots>4</nbrSlots>
+            <classList>
+                <class>LUH10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>9</id>
+            <name>Co hoc KT II</name>
+            <instructor>9</instructor>
+            <nbrSlots>4</nbrSlots>
+            <classList>
+                <class>NUT10</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>10</id>
+            <name>Tieng Anh 4</name>
+            <instructor>10</instructor>
+            <nbrSlots>2</nbrSlots>
+            <classList>
+                <class>NUT10</class>
+            </classList>
+        </course>
+    </coursesList>
+</timetabling>
