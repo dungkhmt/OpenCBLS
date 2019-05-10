@@ -497,6 +497,55 @@
                 <class>VUW10B</class>
             </classList>
         </course>
+        <course>
+            <id>31</id>
+            <name>Toan roi rac</name>
+            <instructor>30</instructor>
+            <nbrSlots>3</nbrSlots>
+            <classList>
+                <class>VUW10A</class>
+            </classList>
+        </course>
+        <course>
+            <id>32</id>
+            <name>Cau truc du lieu va giai thuat</name>
+            <instructor>30</instructor>
+            <nbrSlots>4</nbrSlots>
+            <classList>
+                <class>VUW10A</class>
+            </classList>
+        </course>
+
+		<course>
+            <id>33</id>
+            <name>Toi uu hoa to hop</name>
+            <instructor>20</instructor>
+            <nbrSlots>4</nbrSlots>
+            <classList>
+                <class>VUW10A</class>
+            </classList>
+        </course>
+
+        <course>
+            <id>34</id>
+            <name>Hoc may</name>
+            <instructor>11</instructor>
+            <nbrSlots>4</nbrSlots>
+            <classList>
+                <class>VUW10A</class>
+            </classList>
+        </course>
+		
+		<course>
+            <id>35</id>
+            <name>Tieng Nhat</name>
+            <instructor>8</instructor>
+            <nbrSlots>3</nbrSlots>
+            <classList>
+                <class>VUW10A</class>
+				<class>VUW10B</class>
+            </classList>
+        </course>
 
     </coursesList>
 </timetabling>

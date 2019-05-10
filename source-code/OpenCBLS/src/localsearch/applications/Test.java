@@ -1,10 +1,30 @@
 package localsearch.applications;
 import localsearch.constraints.*;
+import localsearch.constraints.alldifferent.AllDifferent;
 import localsearch.constraints.basic.*;
+import localsearch.functions.conditionalsum.ConditionalSum;
 import localsearch.search.*;
 import localsearch.model.*;
 public class Test {
 
+	public static void test1(){
+		LocalSearchManager mgr = new LocalSearchManager();
+		VarIntLS[] X = new VarIntLS[5];
+		for(int i = 0; i < X.length; i++)
+			X[i] = new VarIntLS(mgr, 1, 5);
+		X[0].setValue(2); X[1].setValue(3); X[2].setValue(3);
+		X[3].setValue(2); X[4].setValue(5);
+		int[] w = new int[]{1, 2, 2, 3, 1};
+		ConstraintSystem S = new ConstraintSystem(mgr);
+		S.post(new LessOrEqual(new ConditionalSum(X, w, 2), 2));
+		S.post(new AllDifferent(X));
+		mgr.close();
+		System.out.println("violations = " + S.violations());
+		System.out.println("delta = " + S.getAssignDelta(X[1], 4));
+		X[1].setValuePropagate(4);
+		System.out.println("new violations = " + S.violations());
+
+	}
 	/**
 	 * @param args
 	 */
@@ -104,6 +124,9 @@ public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Test.test1();
+		if(true)return;
+		
 		int[] a = {1,2,3,4,5,2,3,4,3,5,5};
 		int[] b = {0,0,0,0,0,1,1,1,2,2,3};
 		LocalSearchManager mgr = new LocalSearchManager();

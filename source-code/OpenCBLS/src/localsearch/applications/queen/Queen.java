@@ -1,82 +1,124 @@
 package localsearch.applications.queen;
 
-import java.util.ArrayList;
-
-import localsearch.*;
 import localsearch.model.*;
-import localsearch.constraints.*;
 import localsearch.constraints.alldifferent.AllDifferent;
-import localsearch.functions.*;
 import localsearch.functions.basic.*;
+import localsearch.search.TabuSearch;
 import localsearch.selectors.*;
-import java.util.*;
-public class Queen {
 
-	/**
-	 * @param args
-	 */
-	public void test1(){
-		//java.util.Random R = new java.util.Random();
-		int n=1000;
-		
+import java.io.PrintWriter;
+import java.util.*;
+
+class MyMove{
+	int i;
+	int v;
+	public MyMove(int i, int v){
+		this.i = i; this.v = v;
+	}
+}
+public class Queen {
+	int n;
+	LocalSearchManager ls;
+	ConstraintSystem S;
+	VarIntLS[] x;
+	Random R;
+	
+	public Queen(int n){
+		this.n = n;
+		R = new Random();
+	}
+	public void stateModel(){
 		LocalSearchManager ls=new LocalSearchManager();
-		ConstraintSystem S=new ConstraintSystem(ls);
-		
-		
-		HashMap<VarIntLS, Integer> map = new HashMap<VarIntLS, Integer>();
-		VarIntLS[] x = new VarIntLS[n];
+		S = new ConstraintSystem(ls);
+		x = new VarIntLS[n];
 		for (int i = 0; i < n; i++){
 			x[i] = new VarIntLS(ls, 0, n - 1);
-			//int v = R.nextInt(n);
-			//x[i].setValue(v);
-			
-			map.put(x[i], i);
 		}
 		
 		S.post(new AllDifferent(x));
 		
-			
-		
 		IFunction[] f1=new IFunction[n];
 		for (int i = 0; i < n; i++) 
 			f1[i] =  new FuncPlus(x[i], i);
-		//AllDifferentFunctions c1=new AllDifferentFunctions(f1);
-		//S.post(new AllDifferentFunctions(f1));
 		S.post(new AllDifferent(f1));
 		
 		IFunction[] f2 = new IFunction[n];
-		for (int i = 0; i < n; i++) f2[i] = new FuncPlus(x[i], -i);
-		//S.post(new AllDifferentFunctions(f2));
+		for (int i = 0; i < n; i++) 
+			f2[i] = new FuncPlus(x[i], -i);
 		S.post(new AllDifferent(f2));
 		
-		
-		
-		//S.close();
 		ls.close();
-		System.out.println("Init S = " + S.violations());
-		MinMaxSelector mms = new MinMaxSelector(S);
 		
+	}
+	public void search(){
+		System.out.println("n = " + n + ", init S = " + S.violations());
 		int it = 0;
-		while(it < 10000 && S.violations() > 0){
+		ArrayList<MyMove> L = new ArrayList<MyMove>();
+		
+		while(it < 100000 && S.violations() > 0){
+			int sel_i = -1;
+			int sel_v = -1;
+			int min_delta = 1000000;
+			L.clear();
 			
-			VarIntLS sel_x = mms.selectMostViolatingVariable();
-			int sel_v = mms.selectMostPromissingValue(sel_x);
+			for(int i = 0; i < n; i++){
+				for(int v = x[i].getMinValue(); v <= x[i].getMaxValue(); v++){
+					int delta = S.getAssignDelta(x[i], v);
+					if(delta < min_delta){
+						min_delta = delta;
+						L.clear();
+						L.add(new MyMove(i,v));
+					}else if(delta == min_delta){
+						L.add(new MyMove(i,v));
+					}
+				}
+			}
+			int idx = R.nextInt(L.size());
+			MyMove m = L.get(idx);
+			sel_i = m.i;
+			sel_v = m.v;
 			
-			sel_x.setValuePropagate(sel_v);
-			System.out.println("Step " + it + ", x[" + map.get(sel_x) + "] := " + sel_v + ", S = " + S.violations());
-			
+			x[sel_i].setValuePropagate(sel_v);// local move
 			it++;
+			System.out.println("Step " + it + ", S = " + S.violations());
+		}
+	}
+	
+	public void printHTML(){
+		
+		try{
+			PrintWriter out = new PrintWriter("queen.html");
+			out.println("<table border = 1>");
+			for(int i = 0; i < n; i++){
+				out.println("<tr>");
+				for(int j = 0; j < n; j++)
+					if(x[j].getValue() == i)
+						out.println("<td width=20 height=20, bgcolor='red'></td>");
+					else
+						out.println("<td width=20 height=20, bgcolor='blue'></td>");
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			out.close();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
-		
-		System.out.println(S.violations());
-
 	}
-
+	public void tabuSearch(){
+		TabuSearch ts = new TabuSearch();
+		ts.search(S, 30, 10, 100000, 200);
+		
+	}
+	public void printSolution(){
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Queen Q = new Queen();
-		Q.test1();
+		Queen Q = new Queen(20);
+		Q.stateModel();
+		//Q.search();
+		Q.tabuSearch();
+		Q.printHTML();
 	}
 
 }

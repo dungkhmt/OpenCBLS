@@ -15,7 +15,7 @@ public class TabuSearch {
 	private double t_best;
 	private double t0;
 	private double t;
-	
+
 	public TabuSearch() {
 		rand = new java.util.Random();
 	}
@@ -160,7 +160,6 @@ public class TabuSearch {
 		}
 	}
 
-	
 	public void searchAssignSwap(IConstraint S, int tbl, int maxIter,
 			int maxTime) {
 		t0 = System.currentTimeMillis();
@@ -171,22 +170,22 @@ public class TabuSearch {
 
 		int n = x.length;
 		boolean[][] equalDomain = new boolean[n][n];
-		for(int i = 0; i < n-1; i++){
-			for(int j = i+1; j <  n; j++)
-				if(Utility.equalSet(x[i].getDomain(), x[j].getDomain())){
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = i + 1; j < n; j++)
+				if (Utility.equalSet(x[i].getDomain(), x[j].getDomain())) {
 					equalDomain[i][j] = true;
 					equalDomain[j][i] = true;
-				}else{
+				} else {
 					equalDomain[i][j] = false;
 					equalDomain[j][i] = false;
 				}
 		}
-		
+
 		int iter = 0;
 		maxTime = maxTime * 1000;
 		double t0 = System.currentTimeMillis();
 		ArrayList<Move> moves = new ArrayList<Move>();
-		//int n = x.length;
+		// int n = x.length;
 		int maxV = -1000000000;
 		int minV = 1000000000;
 		for (int i = 0; i < n; i++) {
@@ -233,22 +232,23 @@ public class TabuSearch {
 				}
 			}
 			for (int i = 0; i < x.length - 1; i++) {
-				for (int j = i + 1; j < x.length; j++) if(equalDomain[i][j]){
-					int d = S.getSwapDelta(x[i], x[j]);
-					if (tabuSwap[i][j] <= it || d + S.violations() < best) {
-						if (minDelta > d) {
-							minDelta = d;
-							moves.clear();
-							moves.add(new TwoVariablesSwapMove(
-									MoveType.TwoVariablesSwap, minDelta, x[i],
-									x[j]));
-						} else if (minDelta == d) {
-							moves.add(new TwoVariablesSwapMove(
-									MoveType.TwoVariablesSwap, minDelta, x[i],
-									x[j]));
+				for (int j = i + 1; j < x.length; j++)
+					if (equalDomain[i][j]) {
+						int d = S.getSwapDelta(x[i], x[j]);
+						if (tabuSwap[i][j] <= it || d + S.violations() < best) {
+							if (minDelta > d) {
+								minDelta = d;
+								moves.clear();
+								moves.add(new TwoVariablesSwapMove(
+										MoveType.TwoVariablesSwap, minDelta,
+										x[i], x[j]));
+							} else if (minDelta == d) {
+								moves.add(new TwoVariablesSwapMove(
+										MoveType.TwoVariablesSwap, minDelta,
+										x[i], x[j]));
+							}
 						}
 					}
-				}
 			}
 			if (moves.size() > 0) {
 				Move move = moves.get(rand.nextInt(moves.size()));
@@ -322,8 +322,9 @@ public class TabuSearch {
 				maxStable);
 	}
 
-	private void searchMaintainConstraintsFunction(IFunction f1, IFunction[] f2,
-			IConstraint S, int tabulen, int maxTime, int maxIter, int maxStable) {
+	private void searchMaintainConstraintsFunction(IFunction f1,
+			IFunction[] f2, IConstraint S, int tabulen, int maxTime,
+			int maxIter, int maxStable) {
 
 		t0 = System.currentTimeMillis();
 		HashSet<VarIntLS> _S = new HashSet<VarIntLS>();
@@ -465,19 +466,15 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
-
-				//if (minDelta >= 0) {
-				if(f1.getValue() >= best){
+				} else {
 					nic++;
 					if (nic > maxStable) {
 						System.out.println("TabuSearch::restart.....");
 						restartMaintainConstraintFunction(x, S, f2, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
 				}
 			}
 			it++;
@@ -488,14 +485,15 @@ public class TabuSearch {
 	}
 
 	public void searchMaintainConstraintsFunctionMinimize(IFunction f1,
-			IFunction f2, IConstraint S, int tabulen, int maxTime,
-			int maxIter, int maxStable) {
+			IFunction f2, IConstraint S, int tabulen, int maxTime, int maxIter,
+			int maxStable) {
 		IFunction[] tf = new IFunction[1];
 		tf[0] = f2;
-		
-		searchMaintainConstraintsFunctionMinimize(f1, tf, S, tabulen, maxTime, maxIter, maxStable);
+
+		searchMaintainConstraintsFunctionMinimize(f1, tf, S, tabulen, maxTime,
+				maxIter, maxStable);
 	}
-	
+
 	public void searchMaintainConstraintsFunctionMinimize(IFunction f1,
 			IFunction[] f2, IConstraint S, int tabulen, int maxTime,
 			int maxIter, int maxStable) {
@@ -645,11 +643,9 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
-
-				//if (minDelta >= 0) {
-				if(f1.getValue() >= best){
+				}else {
 					nic++;
 					if (nic > maxStable) {
 						System.out
@@ -658,8 +654,6 @@ public class TabuSearch {
 						restartMaintainConstraintFunction(x, S, f2, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
 				}
 			}
 			it++;
@@ -669,21 +663,26 @@ public class TabuSearch {
 
 	}
 
-	public void updateBest(){
+	/*
+	 * this function should be overwritten within sub-class
+	 */
+	public void updateBest() {
 		
 	}
+
 	public void searchMaintainConstraintsFunctionMaximize(IFunction f1,
-			IFunction f2, IConstraint S, int tabulen, int maxTime,
-			int maxIter, int maxStable) {
+			IFunction f2, IConstraint S, int tabulen, int maxTime, int maxIter,
+			int maxStable) {
 		IFunction[] tf = new IFunction[1];
 		tf[0] = f2;
-		searchMaintainConstraintsFunctionMaximize(f1, tf, S, tabulen, maxTime, maxIter, maxStable);
+		searchMaintainConstraintsFunctionMaximize(f1, tf, S, tabulen, maxTime,
+				maxIter, maxStable);
 	}
-	
+
 	public void searchMaintainConstraintsFunctionMaximize(IFunction f1,
 			IFunction[] f2, IConstraint S, int tabulen, int maxTime,
 			int maxIter, int maxStable) {
-		
+
 		t0 = System.currentTimeMillis();
 		HashSet<VarIntLS> _S = new HashSet<VarIntLS>();
 		/*
@@ -834,11 +833,9 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
-
-				//if (maxDelta < 0) {
-				if(f1.getValue() <= best){
+				}else {
 					nic++;
 					if (nic > maxStable) {
 						System.out
@@ -847,8 +844,6 @@ public class TabuSearch {
 						restartMaintainConstraintFunction(x, S, f2, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
 				}
 			}
 			it++;
@@ -955,11 +950,9 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
-
-				//if (minDelta >= 0) {
-				if(f.getValue() >= best){
+				} else {
 					nic++;
 					if (nic > maxStable) {
 						System.out
@@ -968,8 +961,6 @@ public class TabuSearch {
 						restartMaintainConstraint(x, S, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
 				}
 			}
 			it++;
@@ -1076,11 +1067,9 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
-
-				//if (maxDelta <= 0) {
-				if(f.getValue() <= best){
+				} else {
 					nic++;
 					if (nic > maxStable) {
 						System.out
@@ -1089,8 +1078,6 @@ public class TabuSearch {
 						restartMaintainConstraint(x, S, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
 				}
 			}
 			it++;
@@ -1190,19 +1177,19 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
+				} else {
 
-				//if (minDelta >= 0) {
-				if(f.getValue() >= best){
+					// if (minDelta >= 0) {
+					// if (f.getValue() >= best) {
 					nic++;
 					if (nic > maxStable) {
 						System.out.println("TabuSearch::restart.....");
 						restartMaintainConstraint(x, S, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
+					// }
 				}
 			}
 			it++;
@@ -1284,10 +1271,10 @@ public class TabuSearch {
 			if (moves.size() <= 0) {
 				System.out.println("TabuSearch::restart.....");
 				restartMaintainConstraint(x, S, tabu);
-				if(S.violations() == 0){
-				best = S.violations();
-				for (int i = 0; i < x.length; i++)
-					x_best[i] = x[i].getValue();
+				if (S.violations() == 0) {
+					best = S.violations();
+					for (int i = 0; i < x.length; i++)
+						x_best[i] = x[i].getValue();
 				}
 				// restart(x,tabu);
 				nic = 0;
@@ -1308,19 +1295,17 @@ public class TabuSearch {
 					for (int i = 0; i < x.length; i++)
 						x_best[i] = x[i].getValue();
 					updateBest();
+					nic = 0;
 					t_best = System.currentTimeMillis() - t0;
-				}
+				} else {
 
-				//if (minDelta >= 0) {
-				if(S.violations() >= best){
 					nic++;
 					if (nic > maxStable) {
 						System.out.println("TabuSearch::restart.....");
 						restartMaintainConstraint(x, S, tabu);
 						nic = 0;
 					}
-				} else {
-					nic = 0;
+					
 				}
 			}
 			it++;
@@ -1362,20 +1347,22 @@ public class TabuSearch {
 			for (int j = 0; j < tabu[i].length; j++)
 				tabu[i][j] = -1;
 		}
-		
-	}
-	private void restartMaintainConstraintFunction(VarIntLS[] x, IConstraint S, IFunction[] f,
-			int[][] tabu) {
 
-		
+	}
+
+	private void restartMaintainConstraintFunction(VarIntLS[] x, IConstraint S,
+			IFunction[] f, int[][] tabu) {
+
 		for (int i = 0; i < x.length; i++) {
 			java.util.ArrayList<Integer> L = new java.util.ArrayList<Integer>();
 			for (int v = x[i].getMinValue(); v <= x[i].getMaxValue(); v++) {
 				boolean ok = true;
-				for(int j = 0; j < f.length; j++) if(f[j].getAssignDelta(x[i], v) != 0){
-					ok = false;break;
-				}
-				
+				for (int j = 0; j < f.length; j++)
+					if (f[j].getAssignDelta(x[i], v) != 0) {
+						ok = false;
+						break;
+					}
+
 				if (S.getAssignDelta(x[i], v) <= 0 && ok)
 					L.add(v);
 			}
@@ -1388,14 +1375,15 @@ public class TabuSearch {
 				tabu[i][j] = -1;
 		}
 	}
-	private void restartMaintainConstraintFunction(VarIntLS[] x, IConstraint S, IFunction f,
-			int[][] tabu) {
+
+	private void restartMaintainConstraintFunction(VarIntLS[] x, IConstraint S,
+			IFunction f, int[][] tabu) {
 
 		for (int i = 0; i < x.length; i++) {
 			java.util.ArrayList<Integer> L = new java.util.ArrayList<Integer>();
 			for (int v = x[i].getMinValue(); v <= x[i].getMaxValue(); v++) {
 				boolean ok = f.getAssignDelta(x[i], v) == 0;
-				
+
 				if (S.getAssignDelta(x[i], v) <= 0 && ok)
 					L.add(v);
 			}
@@ -1408,9 +1396,10 @@ public class TabuSearch {
 				tabu[i][j] = -1;
 		}
 	}
-	//public double getTimeBest(){
-	//	return t_best*0.001;
-	//}
+
+	// public double getTimeBest(){
+	// return t_best*0.001;
+	// }
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

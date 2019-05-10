@@ -304,7 +304,7 @@ public class TimeTabling {
 
 	public boolean search() {
 		localsearch.search.TabuSearch ts = new localsearch.search.TabuSearch();
-		ts.search(S, 30, 20, 100000, 50);
+		ts.search(S, 30, 20, 100000, 50);	
 
 		for(int i = 0; i < courses.length; i++){
 			vx[i] = x_d[i].getValue()*6 + x_s[i].getValue();
@@ -382,7 +382,7 @@ public class TimeTabling {
 											+ "px\" BGCOLOR=\"lightgray\" colspan="
 											+ courses[j].nbSlots + ">"
 											+ courses[j].name
-											+ " ,Giảng viên:  "
+											+ ", Giảng viên:  "
 											+ courses[j].instructorID + "</td>");
 									last = t + courses[j].nbSlots;
 									break;
@@ -423,15 +423,66 @@ public class TimeTabling {
 		avg_t = avg_t*1.0/nbSolved;
 		System.out.println("Time = " + avg_t + ", nbSolved = " + nbSolved);
 	}
+	public void printData(String fn){
+		try{
+			PrintWriter out = new PrintWriter(fn);
+			out.print("int[] sl = new int[]{");
+			for(int i = 0; i < courses.length; i++){
+				out.print(courses[i].nbSlots);
+				if(i < courses.length-1) out.print(",");
+			}
+			out.println("};");
+			int[][] c = new int[courses.length][courses.length];
+			out.println("int[][] c = new int[][]{");
+			for(int i = 0; i < courses.length; i++){
+				out.print("{");
+				for(int j = 0; j < courses.length; j++){
+					if((i != j) && (courses[i].instructorID == courses[j].instructorID ||
+							commonClass(courses[i], courses[j]))){
+						c[i][j] = 1;
+					}else{
+						c[i][j] = 0;
+					}
+					out.print(c[i][j]);
+					if(j < courses.length-1) out.print(",");
+				}
+				out.print("}");
+				if(i < courses.length-1) out.println(",");
+				else out.println();
+			}
+			out.println("};");
+			HashMap<Integer, Instructor> map = new HashMap<Integer, Instructor>();
+			for(int i = 0; i < instructors.length; i++)
+				map.put(instructors[i].instructorID, instructors[i]);
+			
+			out.println("Pair[][] f = new Pair[][]{");
+			for(int i = 0; i < courses.length; i++){
+				Instructor I = map.get(courses[i].instructorID);
+				out.print("new Pair[]{");
+				for(int j = 0; j < I.busyList.size(); j++){
+					out.print("new Pair(" + I.busyList.get(j).day + "," + I.busyList.get(j).slot + ")");
+					if(j < I.busyList.size()-1) out.print(",");
+				}
+				out.print("}");
+				if(i < courses.length-1) out.println(",");
+				else out.println();
+			}
+			out.println("};");
+			out.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		TimeTabling TT = new TimeTabling();
-		TT.readData("data\\SIETimeTabling\\timetabling-data-30-30.xml");
+		//TT.readData("data\\SIETimeTabling\\timetabling-data-30-30.xml");
+		TT.readData("data\\SIETimeTabling\\timetabling-data-10-10.xml");
 		TT.stateModel();
 		TT.search();
 		TT.printSolutionHTML("TimeTabling.html");
-		
+		TT.printData("data/SIETimeTabling/timetabling-plain.txt");
 		//TimeTabling TT = new TimeTabling();
 		//TT.testBatch("data\\SIETimeTabling\\timetabling-data-46-46.xml",10);
 
