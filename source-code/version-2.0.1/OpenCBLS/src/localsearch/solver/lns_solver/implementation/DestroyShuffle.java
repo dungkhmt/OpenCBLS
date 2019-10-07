@@ -22,12 +22,18 @@ public class DestroyShuffle implements IDestroy {
     private int id;
 
     public DestroyShuffle(VarIntLS[] variables, int destroySize, IObjective objective, Random rd) {
-        this.variables = variables;
-        this.destroySize = destroySize;
+        ArrayList<VarIntLS> varList = new ArrayList<>();
+        for (VarIntLS var : variables) {
+            if (var.getDomainSize() > 1) {
+                varList.add(var);
+            }
+        }
+        this.variables = varList.toArray(new VarIntLS[0]);
+        this.destroySize = Math.min(destroySize, this.variables.length);
         this.objective = objective;
         this.rd = rd;
         idList = new ArrayList<>();
-        for (int i = 0; i < variables.length; ++i) {
+        for (int i = 0; i < this.variables.length; ++i) {
             idList.add(i);
         }
         reset();
@@ -35,9 +41,6 @@ public class DestroyShuffle implements IDestroy {
 
     @Override
     public VarIntLS[] destroy() {
-        if (objective.isBetter(this) == -1) {
-            reset();
-        }
         VarIntLS[] variables = new VarIntLS[destroySize];
         for (int i = id, j = 0; j < destroySize; ++i, ++j) {
             variables[j] = this.variables[idList.get(i % idList.size())];

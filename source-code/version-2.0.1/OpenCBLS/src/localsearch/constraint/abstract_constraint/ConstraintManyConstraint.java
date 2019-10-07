@@ -1,6 +1,7 @@
 package localsearch.constraint.abstract_constraint;
 
 import localsearch.model.IConstraint;
+import localsearch.model.Invariant;
 import localsearch.model.variable.VarIntLS;
 
 import java.util.HashMap;
@@ -37,5 +38,10 @@ public abstract class ConstraintManyConstraint extends Constraint {
     @Override
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return constraints;
     }
 }

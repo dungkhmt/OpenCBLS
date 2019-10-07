@@ -1,6 +1,7 @@
 package localsearch.function.abstract_function;
 
 import localsearch.model.IFunction;
+import localsearch.model.Invariant;
 import localsearch.model.variable.VarIntLS;
 
 import java.util.HashMap;
@@ -37,5 +38,10 @@ public abstract class FuncManyElement extends FuncDependFunc {
     @Override
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return functions;
     }
 }

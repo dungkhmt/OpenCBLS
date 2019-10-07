@@ -113,7 +113,7 @@ public class RepairDefault implements IRepair {
         if (varId == repairVariables.length) {
             tempSolutionProcess(tempSolution);
         } else {
-            for (Integer value : repairVariables[varId].getDomainArray()) {
+            for (int value : repairVariables[varId].getDomainArray()) {
                 tempSolution[varId] = value;
                 if (varId + 1 == idVarMaxRange) {
                     recursiveSearch(varId + 2, idVarMaxRange, tempSolution);
@@ -142,7 +142,14 @@ public class RepairDefault implements IRepair {
     }
 
     protected void tempSolutionProcess(int[] tempSolution) {
-        int better = objective.isBetter(this, repairVariables, tempSolution);
+        boolean currentSolution = true;
+        for (int i = 0; i < repairVariables.length; ++i) {
+            if (repairVariables[i].getValue() != tempSolution[i]) {
+                currentSolution = false;
+                break;
+            }
+        }
+        int better = currentSolution ? 0 : objective.isBetter(this, repairVariables, tempSolution);
         synchronized (this) {
             if (better <= 0) {
                 if (better < 0) {

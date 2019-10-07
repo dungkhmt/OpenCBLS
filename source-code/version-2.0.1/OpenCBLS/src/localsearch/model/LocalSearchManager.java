@@ -1,6 +1,7 @@
 package localsearch.model;
 
 import localsearch.model.variable.VarIntLS;
+import localsearch.utils.ClassUtils;
 
 import java.util.*;
 
@@ -34,6 +35,11 @@ public class LocalSearchManager {
                 }
             }
             variables = mapVarToInvariant.keySet().toArray(new VarIntLS[0]);
+            for (VarIntLS var : variables) {
+                if (var.getLocalSearchManager() != this) {
+                    throw new RuntimeException("Wrong modelling!!");
+                }
+            }
             closed = true;
         }
         initPropagate();
@@ -62,7 +68,13 @@ public class LocalSearchManager {
     }
 
     public void propagate(VarIntLS[] variables, int[] values) {
-        ArrayList<Invariant> invariants = new ArrayList<>(Invariant.getRefInvariants(variables, mapVarToInvariant));
+        Set<VarIntLS> varChanges = new HashSet<>();
+        for (int i = 0; i < variables.length; ++i) {
+            if (variables[i].getValue() != values[i]) {
+                varChanges.add(variables[i]);
+            }
+        }
+        ArrayList<Invariant> invariants = new ArrayList<>(Invariant.getRefInvariants(varChanges, mapVarToInvariant));
         invariants.sort(PROPAGATE_ORDER_COMPARATOR);
 
 //        for verify
@@ -71,11 +83,9 @@ public class LocalSearchManager {
         for (int i = 0; i < variables.length; ++i) {
             variables[i].setValue(values[i]);
         }
-        HashSet<VarIntLS> variableSet = new HashSet<>(variables.length);
-        Collections.addAll(variableSet, variables);
         for (Invariant invariant : invariants) {
 //            invariant.propagateConfirm(variableSet, mapInvariantDelta.get(invariant));
-            invariant.propagate(variableSet);
+            invariant.propagate(varChanges);
         }
 //        propagateVerify(invariants);
     }
@@ -106,5 +116,63 @@ public class LocalSearchManager {
 
     public int getNumInvariants() {
         return allInvariants.size();
+    }
+
+    private String dotString = null;
+
+    private void buildDot() {
+        Map<String, List<Object>> mapSameTypes = new HashMap<>();
+        Map<Object, String> mapNames = new HashMap<>();
+        Map<Integer, List<Invariant>> mapSameLevels = new HashMap<>();
+        for (VarIntLS var : variables) {
+            mapSameTypes.computeIfAbsent(ClassUtils.getClassName(var), k -> new ArrayList<>()).add(var);
+        }
+        for (Invariant invariant : allInvariants) {
+            mapSameTypes.computeIfAbsent(ClassUtils.getClassName(invariant), k -> new ArrayList<>()).add(invariant);
+            mapSameLevels.computeIfAbsent(invariant.getLevel(), k -> new ArrayList<>()).add(invariant);
+        }
+        mapSameTypes.forEach((k, v) -> {
+            int i = 0;
+            for (Object o : v) {
+                mapNames.put(o, k + i);
+                ++i;
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        sb.append("digraph DG {\n\nnode [shape = record];\nranksep = 3.0; size = \"10,10\";\n\n");
+        for (VarIntLS var : variables) {
+            sb.append(mapNames.get(var)).append("  [shape = circle]\n");
+        }
+        sb.append("\n");
+        for (List<Invariant> invariants : mapSameLevels.values()) {
+            sb.append("{ rank = same ");
+            for (Invariant invariant : invariants) {
+                sb.append(mapNames.get(invariant)).append(" ");
+            }
+            sb.append("}\n");
+        }
+        sb.append("\n");
+        for (Invariant invariant : allInvariants) {
+            if (invariant.getDependencyInvariants().length == 0) {
+                for (VarIntLS var : invariant.getVariables()) {
+                    sb.append(mapNames.get(var)).append(" -> ").append(mapNames.get(invariant)).append(";\n");
+                }
+            }
+        }
+        sb.append("\n");
+        for (Invariant invariant : allInvariants) {
+            for (Invariant childInvariant : invariant.getDependencyInvariants()) {
+                sb.append(mapNames.get(childInvariant)).append(" -> ").append(mapNames.get(invariant)).append(";\n");
+            }
+        }
+        sb.append("}");
+        dotString = sb.toString();
+    }
+
+    public String getDotString() {
+        if (dotString == null) {
+            buildDot();
+        }
+        return dotString;
     }
 }

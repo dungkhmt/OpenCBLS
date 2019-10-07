@@ -1,6 +1,7 @@
 package localsearch.function.conditional;
 
 import localsearch.model.IFunction;
+import localsearch.model.Invariant;
 import localsearch.model.LocalSearchManager;
 import localsearch.model.variable.VarIntLS;
 import localsearch.utils.NumberUtils;
@@ -67,6 +68,11 @@ public class ConditionalSumVarConst implements IFunction {
     @Override
     public VarIntLS[] getVariables() {
         return variables;
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return new Invariant[0];
     }
 
     @Override

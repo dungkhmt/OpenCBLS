@@ -14,6 +14,8 @@ public interface Invariant {
 
     public VarIntLS[] getVariables();
 
+    public Invariant[] getDependencyInvariants();
+
     public double getAssignDelta(VarIntLS[] variables, int[] values);
 
     public default double getAssignDelta(VarIntLS variable, int value) {

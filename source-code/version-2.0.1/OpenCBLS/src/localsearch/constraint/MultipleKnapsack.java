@@ -2,6 +2,7 @@ package localsearch.constraint;
 
 import localsearch.constraint.abstract_constraint.Constraint;
 import localsearch.model.ConstraintSystem;
+import localsearch.model.Invariant;
 import localsearch.model.LocalSearchManager;
 import localsearch.model.variable.VarIntLS;
 import localsearch.solver.lns_solver.LnsSolver;
@@ -35,6 +36,11 @@ public class MultipleKnapsack extends Constraint {
         }
         binCapacity = new int[binSize.length];
         localSearchManager.post(this);
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return new Invariant[0];
     }
 
     @Override

@@ -2,6 +2,7 @@ package localsearch.constraint;
 
 import localsearch.constraint.abstract_constraint.Constraint;
 import localsearch.model.IFunction;
+import localsearch.model.Invariant;
 import localsearch.model.variable.VarIntLS;
 
 import java.util.Collections;
@@ -55,6 +56,11 @@ public class NotOverlap2D extends Constraint {
         if (yLen2.getLevel() > maxLevel) maxLevel = yLen2.getLevel();
         level = maxLevel + 1;
         localSearchManager.post(this);
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return new IFunction[]{x1, y1, xLen1, yLen1, x2, y2, xLen2, yLen2};
     }
 
     @Override

@@ -1,6 +1,7 @@
 package localsearch.function.wrapper;
 
 import localsearch.model.IFunction;
+import localsearch.model.Invariant;
 import localsearch.model.LocalSearchManager;
 import localsearch.model.variable.VarIntLS;
 import localsearch.utils.NumberUtils;
@@ -20,6 +21,7 @@ public class FuncConst implements IFunction {
         this.value = value;
         variables = new VarIntLS[0];
         this.localSearchManager = localSearchManager;
+        localSearchManager.post(this);
     }
 
     @Override
@@ -40,6 +42,11 @@ public class FuncConst implements IFunction {
     @Override
     public VarIntLS[] getVariables() {
         return variables;
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return new Invariant[0];
     }
 
     @Override

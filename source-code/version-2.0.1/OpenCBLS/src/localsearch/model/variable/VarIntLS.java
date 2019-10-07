@@ -29,11 +29,6 @@ public class VarIntLS {
         this.min = min;
         this.max = max;
         this.localSearchManager = localSearchManager;
-        domain = new HashSet<>();
-        for (int i = min; i <= max; ++i) {
-            domain.add(i);
-        }
-        domainArray = domain.toArray(new Integer[0]);
         boundedDomain = true;
     }
 
@@ -42,11 +37,6 @@ public class VarIntLS {
         this.max = max;
         this.localSearchManager = localSearchManager;
         value = rd.nextInt(max - min + 1) + min;
-        domain = new HashSet<>();
-        for (int i = min; i <= max; ++i) {
-            domain.add(i);
-        }
-        domainArray = domain.toArray(new Integer[0]);
         boundedDomain = true;
     }
 
@@ -103,6 +93,13 @@ public class VarIntLS {
     }
 
     public Integer[] getDomainArray() {
+        if (!boundedDomain) {
+            return domainArray;
+        }
+        Integer[] domainArray = new Integer[max - min + 1];
+        for (int i = 0; i < domainArray.length; ++i) {
+            domainArray[i] = min + i;
+        }
         return domainArray;
     }
 
@@ -121,6 +118,9 @@ public class VarIntLS {
     }
 
     public int getDomainSize() {
+        if (boundedDomain) {
+            return max - min + 1;
+        }
         return domainArray.length;
     }
 

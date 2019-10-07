@@ -1,6 +1,7 @@
 package localsearch.constraint.abstract_constraint;
 
 import localsearch.model.IFunction;
+import localsearch.model.Invariant;
 import localsearch.model.variable.VarIntLS;
 
 import java.util.Collections;
@@ -35,5 +36,10 @@ public abstract class ConstraintTwoFunction extends Constraint {
     @Override
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public Invariant[] getDependencyInvariants() {
+        return new IFunction[]{f1, f2};
     }
 }

@@ -106,8 +106,8 @@ public class LnsSolver {
                 objective.update(this);
             }
         }
-        restoreSolution();
         timer.cancel();
+        restoreSolution();
     }
 
     private void saveSolution() {

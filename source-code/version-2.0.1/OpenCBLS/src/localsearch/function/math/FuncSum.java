@@ -99,6 +99,14 @@ public class FuncSum implements IFunction {
     }
 
     @Override
+    public Invariant[] getDependencyInvariants() {
+        if (useFunction) {
+            return functions;
+        }
+        return new Invariant[0];
+    }
+
+    @Override
     public void propagate(Set<VarIntLS> variables) {
         double delta = 0;
         if (!useFunction) {

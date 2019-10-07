@@ -55,6 +55,14 @@ public class AllDifferent extends Constraint {
     }
 
     @Override
+    public Invariant[] getDependencyInvariants() {
+        if (useFunction) {
+            return functions;
+        }
+        return new IFunction[0];
+    }
+
+    @Override
     public double getAssignDelta(VarIntLS[] variables, int[] values) {
         Map<Double, Integer> map = new TreeMap<>(NumberUtils.REAL_COMPARATOR);
         if (!useFunction) {

@@ -38,6 +38,11 @@ public class ConstraintSystem implements IConstraint {
     }
 
     @Override
+    public Invariant[] getDependencyInvariants() {
+        return and.getDependencyInvariants();
+    }
+
+    @Override
     public void propagate(Set<VarIntLS> variables) {
         and.propagate(variables);
     }
